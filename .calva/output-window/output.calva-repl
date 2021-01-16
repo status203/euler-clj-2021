@@ -1,0 +1,191 @@
+; This is the Calva evaluation results output window.
+; TIPS: The keyboard shortcut `ctrl+alt+c o` shows and focuses this window
+;   when connected to a REPL session.
+; Please see https://calva.io/output/ for more info.
+; Happy coding! ♥️
+
+; Jacking in...
+; Starting Jack-in Terminal: lein update-in :dependencies conj '[nrepl,"0.8.3"]' -- update-in :dependencies conj '[clj-kondo,"2020.04.05"]' -- update-in :plugins conj '[cider/cider-nrepl,"0.25.6"]' -- update-in '[:repl-options,:nrepl-middleware]' conj '["cider.nrepl/cider-middleware"]' -- repl :headless
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS: 
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉euler-clj-2021.core꞉>  ; Use `alt+enter` to evaluate
+; Jack-in done.
+clj꞉euler-clj-2021.core꞉> 
+; Evaluating file: numbers.clj
+#'euler-clj-2021.math.numbers/factors
+; Running tests for euler-clj-2021.math.numbers...
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+(= [1 2] (num/factors 2))
+; actual:
+(not (= [1 2] (1)))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+(= [1 2 3 6] (num/factors 6))
+; actual:
+(not (= [1 2 3 6] (1)))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+(= [1 2 4 8] (num/factors 8))
+; actual:
+(not (= [1 2 4 8] (1 3)))
+; 21 tests finished, problems found. 😭 errors: 0, failures: 3, ns: 1, vars: 3
+clj꞉euler-clj-2021.math.numbers꞉> 
+; Evaluating file: numbers_test.clj
+#'euler-clj-2021.math.numbers-test/factors-tests
+; Running tests for euler-clj-2021.math.numbers-test...
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2]
+; actual:
+((1))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2 3 6]
+; actual:
+((1))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2 4 8]
+; actual:
+((1 3))
+; 21 tests finished, problems found. 😭 errors: 0, failures: 3, ns: 1, vars: 3
+clj꞉euler-clj-2021.math.numbers-test꞉> 
+; Evaluating file: numbers_test.clj
+#'euler-clj-2021.math.numbers-test/fibonacci-tests
+; Running tests for euler-clj-2021.math.numbers-test...
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2]
+; actual:
+((1))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2 3 6]
+; actual:
+((1))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2 4 8]
+; actual:
+((1 3))
+; 21 tests finished, problems found. 😭 errors: 0, failures: 3, ns: 1, vars: 3
+clj꞉euler-clj-2021.math.numbers-test꞉> 
+
+
+
+
+
+
+
+; Evaluating file: numbers_test.clj
+#'euler-clj-2021.math.numbers-test/fibonacci-tests
+; Running tests for euler-clj-2021.math.numbers-test...
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2]
+; actual:
+((1))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2 3 6]
+; actual:
+((1))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2 4 8]
+; actual:
+((1 3))
+; 21 tests finished, problems found. 😭 errors: 0, failures: 3, ns: 1, vars: 3
+clj꞉euler-clj-2021.math.numbers-test꞉> 
+; Running all project tests…
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2]
+; actual:
+((1))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2 3 6]
+; actual:
+((1))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2 4 8]
+; actual:
+((1 3))
+; 21 tests finished, problems found. 😭 errors: 0, failures: 3, ns: 1, vars: 3
+clj꞉euler-clj-2021.math.numbers-test꞉> 
+; Running all project tests…
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2]
+; actual:
+((1))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2 3 6]
+; actual:
+((1))
+; FAIL in euler-clj-2021.math.numbers-test/factors-tests (numbers_test.clj:59):
+; divisors:
+; expected:
+[1 2 4 8]
+; actual:
+((1 3))
+; 21 tests finished, problems found. 😭 errors: 0, failures: 3, ns: 1, vars: 3
+clj꞉euler-clj-2021.math.numbers-test꞉> 
+; Evaluating file: p3.clj
+; Syntax error (IllegalAccessError) compiling at (src/euler_clj_2021/problems/p3.clj:1:1).
+; distinct-prime-factors does not exist
+; Evaluation of file p3.clj failed: class clojure.lang.Compiler$CompilerException
+
+clj꞉euler-clj-2021.math.numbers-test꞉> 
+clj꞉euler-clj-2021.problems.p3꞉> 
+; Evaluating file: numbers_test.clj
+; Syntax error compiling at (test/euler_clj_2021/math/numbers_test.clj:26:7).
+; No such var: num/prime?
+; Evaluation of file numbers_test.clj failed: class clojure.lang.Compiler$CompilerException
+
+clj꞉euler-clj-2021.problems.p3꞉> 
+clj꞉euler-clj-2021.math.numbers-test꞉> 
+; Evaluating file: p3.clj
+; Syntax error (IllegalAccessError) compiling at (src/euler_clj_2021/problems/p3.clj:1:1).
+; distinct-prime-factors does not exist
+; Evaluation of file p3.clj failed: class clojure.lang.Compiler$CompilerException
+
+clj꞉euler-clj-2021.math.numbers-test꞉> 
+clj꞉euler-clj-2021.problems.p3꞉> 
+; Evaluating file: numbers.clj
+#'euler-clj-2021.math.numbers/distinct-prime-factors
+clj꞉euler-clj-2021.math.numbers꞉> 
+; Evaluating file: p3.clj
+; No results from file evaluation.
+clj꞉euler-clj-2021.problems.p3꞉> 
+; Evaluating file: p3.clj
+29
+clj꞉euler-clj-2021.problems.p3꞉> 
