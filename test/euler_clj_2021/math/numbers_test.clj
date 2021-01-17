@@ -29,6 +29,10 @@
       (are [n] (not (num/prime? n))
         -5 -1 0 1 4 62))))
 
+(deftest primes-tests
+  (testing "primes:"
+    (is (= [2 3 5 7 11 13 17 19 23 29] (take 10 (num/primes))))))
+
 (deftest distinct-prime-factors-tests
     (testing "distinct-prime-factors:"
       (are [n expected] (= expected (num/distinct-prime-factors n))
@@ -38,6 +42,7 @@
         2 [2]
         6 [2 3]
         8 [2]
+        11 [11]
         12 [2 3])))
 
 (deftest factors-tests

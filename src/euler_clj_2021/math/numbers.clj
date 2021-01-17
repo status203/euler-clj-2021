@@ -27,9 +27,21 @@
     :else (->> (range 2 n)
                (filter #(multiple? n %))
                empty?)))
+(defn primes
+  []
+  (concat [2 3 5 7 11 13]
+          (->> (iterate (partial + 2) 15)
+               (filter prime?))))
+
+(defn square [n] (* n n))
 
 (defn distinct-prime-factors
   "Returns a list of prime factors of n. n must be a positive integer > 1"
   [n]
-  (->> (factors n)
-       (filter prime?)))
+  (->> (take-while #(<= % n) (primes))
+       (reduce (fn [acc prime]
+                 (if (multiple? n prime)
+                   (conj acc prime)
+                   acc))
+               [])))
+
