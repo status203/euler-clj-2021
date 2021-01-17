@@ -27,21 +27,52 @@
     :else (->> (range 2 n)
                (filter #(multiple? n %))
                empty?)))
+
+(defn next-prime
+  "Returns the next prime after the supplied sequence of primes and the highest
+   of that sequence (to avoid 'last' on a seq). Assumes highest-prev-prime is at
+   least 3"
+  [prev-primes highest-prev-prime]
+  (loop [candidate (+ 2 highest-prev-prime)]
+    (let [upper-bound (Math/floor (Math/sqrt candidate))
+          potential-factors (take-while (partial >= upper-bound) prev-primes)]
+      (if (some (partial multiple? candidate) potential-factors)
+        (recur (+ 2 candidate))
+        candidate))))
+
+(defn rest-primes
+  "Takes a sequence of primes and the highest of those primes and returns an 
+   infinite lazy sequence of the subsequent primes. Assumes that 
+   highest-prev-prime is at least 3"
+  [prev-primes highest-prev-prime]
+  (let [next-prime-value (next-prime prev-primes highest-prev-prime)
+        next-previous-primes (concat prev-primes [next-prime-value])]
+    (lazy-seq (cons next-prime-value (rest-primes next-previous-primes 
+                                                  next-prime-value)))))
+
 (defn primes
+  "Returns a lazy infinite sequence of primes"
   []
-  (concat [2 3 5 7 11 13]
-          (->> (iterate (partial + 2) 15)
-               (filter prime?))))
+  (concat [2 3 5 7] (rest-primes [2 3 5 7] 7)))
+
+(defn prime-factors
+  "Returns a complete list of prime factors of n. E.g. the prime factors of 12 are
+   [2 2 3]. If supplied with a sequence of primes it uses those (avoids calling
+   (primes) every time if you're factoring a lot))"
+  ([n]
+   (prime-factors n (primes)))
+  ([n potential-factors]
+   (loop [potential-factors potential-factors
+          remaining n
+          acc-factors []]
+     (if (= remaining 1)
+       acc-factors
+       (let [potential-factor (first potential-factors)]
+         (if (multiple? remaining potential-factor)
+           (recur potential-factors
+                  (quot remaining potential-factor)
+                  (conj acc-factors potential-factor))
+           (recur (rest potential-factors) remaining acc-factors)))))))
 
 (defn square [n] (* n n))
-
-(defn distinct-prime-factors
-  "Returns a list of prime factors of n. n must be a positive integer > 1"
-  [n]
-  (->> (take-while #(<= % n) (primes))
-       (reduce (fn [acc prime]
-                 (if (multiple? n prime)
-                   (conj acc prime)
-                   acc))
-               [])))
 
