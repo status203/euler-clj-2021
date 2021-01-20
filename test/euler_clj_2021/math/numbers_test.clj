@@ -78,6 +78,18 @@
         1 1 [1 1 2 3 5]
         5 6 [5 6 11 17 28]))))
 
+(deftest palindromic?
+  (testing "palindromic?:"
+    (testing "should be true"
+      (are [n] (true? (num/palindromic? n))
+        0
+        1
+        55
+        135531))
+    (testing "should be false"
+      (are [n] (false? (num/palindromic? n))
+        10
+        1355311))))
 
 #_(deftest proper-factors-tests
   (testing "proper-divisors:"

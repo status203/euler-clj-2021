@@ -76,3 +76,8 @@
 
 (defn square [n] (* n n))
 
+(defn palindromic?
+  "Returns whether n is palindromic"
+  [n]
+  (let [str-n (str n)]
+    (= str-n (apply str (reverse str-n)))))
