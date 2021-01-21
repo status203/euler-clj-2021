@@ -81,3 +81,23 @@
   [n]
   (let [str-n (str n)]
     (= str-n (apply str (reverse str-n)))))
+
+(defn expand-frequencies
+  "Takes a map of frequencies and returns a sequence of the specified number of
+  eack value. E.g. {2 3 5 1} returns (2 2 2 5)"
+  [m]
+  (reduce (fn [acc [k v]] (concat (repeat v k) acc))
+          []
+          m))
+
+(defn least-common-multiple
+  "Returns the least common multiple of a sequence of numbers"
+  ([] 1)
+  ([n] n)
+  ([n & rst] 
+   (->> (cons n rst)
+        (map prime-factors)
+        (map frequencies)
+        (reduce (partial merge-with max))
+        expand-frequencies
+        (apply *))))

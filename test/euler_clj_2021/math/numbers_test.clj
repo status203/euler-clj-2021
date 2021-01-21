@@ -91,6 +91,15 @@
         10
         1355311))))
 
+(deftest expand-frequencies-tests
+  (are [m expected] (= expected (sort (num/expand-frequencies m)))
+    {} []
+    {2 3} [2 2 2]
+    {2 1 19 2} [2 19 19]))
+
+(deftest least-common-multiple
+  (is (= 60 (num/least-common-multiple 1 2 3 4 5))))
+
 #_(deftest proper-factors-tests
   (testing "proper-divisors:"
     (are [n expected] (= expected (num/proper-factors n))
