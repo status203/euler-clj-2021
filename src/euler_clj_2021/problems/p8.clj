@@ -28,3 +28,4 @@
      (partition 13 1)
      (map (partial reduce *))
      (reduce max))
+;; => 23514624000

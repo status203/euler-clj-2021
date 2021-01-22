@@ -11,3 +11,4 @@
        (* x y))
      (filter palindromic?)
      (apply max))
+;; => 906609

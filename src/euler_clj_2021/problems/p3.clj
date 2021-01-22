@@ -6,3 +6,4 @@
 ;; What is the largest prime factor of the number 600851475143 ?
 
 (reduce max (prime-factors 600851475143))
+;; => 6857

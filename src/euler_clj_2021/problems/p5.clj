@@ -8,3 +8,5 @@
 ;; numbers from 1 to 20?
 
 (apply least-common-multiple (range 2 21))
+;; => 232792560
+
