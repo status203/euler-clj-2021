@@ -1,9 +1,14 @@
 (ns euler-clj-2021.math.numbers)
 
 (defn multiple?
-  "Returns whether x is a multiple of base"
-  [num x]
-  (= 0 (mod num x)))
+  "Returns whether n is a multiple of base"
+  [base n]
+  (zero? (mod n base)))
+
+(defn divides?
+  "Returns whether base divides n"
+  [n base]
+  (zero? (mod n base)))
 
 (defn fibonacci
   "Creates an infinite lazy fibonacci sequence starting with m, n (0,1 by default)"
@@ -16,44 +21,47 @@
   "Returns a sequence of all factors of n (incl. 1 and n)"
   [n]
   (->> (range 1 (inc n))
-       (filter #(multiple? n %))))
+       (filter #(multiple? % n))))
 
 (defn prime?
   "(First prime test) niave check  - returns whether n is prime"
   [n]
-  (cond 
+  (cond
     (< n 2) false
     (= n 2) true
-    :else (->> (range 2 n)
-               (filter #(multiple? n %))
-               empty?)))
+    :else (let [upper-bound (Math/floor (Math/sqrt n))
+                potential-factors (cons 2 (range 3 upper-bound 2))] 
+            (->> potential-factors
+                 (filter #(multiple? % n))
+                 empty?))))
 
 (defn next-prime
   "Returns the next prime after the supplied sequence of primes and the highest
    of that sequence (to avoid 'last' on a seq). Assumes highest-prev-prime is at
    least 3"
   [prev-primes highest-prev-prime]
-  (loop [candidate (+ 2 highest-prev-prime)]
-    (let [upper-bound (Math/floor (Math/sqrt candidate))
-          potential-factors (take-while (partial >= upper-bound) prev-primes)]
-      (if (some (partial multiple? candidate) potential-factors)
-        (recur (+ 2 candidate))
-        candidate))))
+  (loop [candidates (iterate (partial +' 2) (+' 2 highest-prev-prime))]
+    (let [candidate (first candidates)
+          upper-bound (Math/floor (Math/sqrt candidate))
+          potential-factors (take-while (partial <= upper-bound) prev-primes)]
+      (if (not-any? (partial divides? candidate) prev-primes)
+        candidate
+        (recur (rest candidates))))))
 
 (defn rest-primes
-  "Takes a sequence of primes and the highest of those primes and returns an 
-   infinite lazy sequence of the subsequent primes. Assumes that 
-   highest-prev-prime is at least 3"
+  "Returns a lazy sequence of the subsequent primes to the supplied sequence and
+   highest value of that sequence. Assumes highest-prev-prime is at least 3"
   [prev-primes highest-prev-prime]
   (let [next-prime-value (next-prime prev-primes highest-prev-prime)
         next-previous-primes (concat prev-primes [next-prime-value])]
-    (lazy-seq (cons next-prime-value (rest-primes next-previous-primes 
+    (lazy-seq (cons next-prime-value (rest-primes next-previous-primes
                                                   next-prime-value)))))
 
 (defn primes
   "Returns a lazy infinite sequence of primes"
   []
-  (concat [2 3 5 7] (rest-primes [2 3 5 7] 7)))
+  (concat [2 3 5 7]
+          (rest-primes [2 3 5 7] 7)))
 
 (defn prime-factors
   "Returns a complete list of prime factors of n. E.g. the prime factors of 12 are
@@ -66,13 +74,13 @@
           remaining n
           acc-factors []]
      (if (= remaining 1)
-       acc-factors
+       acc-factors ; base case
        (let [potential-factor (first potential-factors)]
-         (if (multiple? remaining potential-factor)
+         (if (multiple? potential-factor remaining)
            (recur potential-factors
-                  (quot remaining potential-factor)
-                  (conj acc-factors potential-factor))
-           (recur (rest potential-factors) remaining acc-factors)))))))
+                  (quot remaining potential-factor) ; reduce remaining
+                  (conj acc-factors potential-factor)) 
+           (recur (rest potential-factors) remaining acc-factors))))))) ; remove non-factor
 
 (defn square [n] (* n n))
 
@@ -94,7 +102,7 @@
   "Returns the least common multiple of a sequence of numbers"
   ([] 1)
   ([n] n)
-  ([n & rst] 
+  ([n & rst]
    (->> (cons n rst)
         (map prime-factors)
         (map frequencies)
