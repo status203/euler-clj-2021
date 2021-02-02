@@ -1,4 +1,5 @@
-(ns euler-clj-2021.math.numbers)
+(ns euler-clj-2021.math.numbers
+  (:require [shams.priority-queue :as pq]))
 
 (defn multiple?
   "Returns whether n is a multiple of base"
@@ -30,7 +31,7 @@
     (< n 2) false
     (= n 2) true
     :else (let [upper-bound (Math/floor (Math/sqrt n))
-                potential-factors (cons 2 (range 3 upper-bound 2))] 
+                potential-factors (cons 2 (range 3 upper-bound 2))]
             (->> potential-factors
                  (filter #(multiple? % n))
                  empty?))))
@@ -57,11 +58,56 @@
     (lazy-seq (cons next-prime-value (rest-primes next-previous-primes
                                                   next-prime-value)))))
 
-(defn primes
+(defn primes-by-prior-primes
   "Returns a lazy infinite sequence of primes"
   []
   (concat [2 3 5 7]
           (rest-primes [2 3 5 7] 7)))
+
+(defn sieve-update-count
+  "Takes an individual count [base multiple] and a candidate, and returns a new
+   count where the multipse is >= the candidate."
+  [[base multiple :as sieve-count] candidate]
+  [base (first (drop-while (partial > candidate)
+                           (iterate (partial + base) (+ multiple base))))])
+
+(defn sieve-new-counts
+  "Takes a priority queue of counts ([base multiple]) and a candidate and updates
+   the counts so that all multiples >= candidate"
+  [counts candidate]
+  (let [[_ multiple :as sieve-count] (peek counts)]
+    (if (<= candidate multiple)
+      counts ; Base case - highest priority (lowest multiple) >= candidate.
+      (recur (conj (pop counts) (sieve-update-count sieve-count candidate))
+             candidate))))
+
+(defn sieve-next-candidate-state
+  "Takes a prime sieve state corresponding to having considered a candidate and 
+   returns the sieve state corresponding to having evaluated the next candidate.
+   Sieve state is [nil/prime remaining-candidates existing-prime-counts].
+   Prime counts are a priority queue (by lowest multiple) of [base multiple]"
+  [[_ [candidate & rest-candidates] multiples]]
+  (let [new-counts (sieve-new-counts multiples candidate)
+        lowest-count-multiple (second (peek new-counts))]
+    (if (not= candidate lowest-count-multiple)
+      [candidate rest-candidates (conj new-counts [candidate (+ candidate candidate)])]
+      [nil rest-candidates new-counts])))
+
+(defn sieve-states
+  "Returns a lazy infinite sequence of iterative prime sieve states"
+  []
+  (let [first-sieve-state [2
+                           (iterate (partial + 2) 3)
+                           (pq/priority-queue (comp - second) :elements [[2 4]])]]
+    (iterate sieve-next-candidate-state first-sieve-state)))
+
+
+(defn primes
+  "Returns a lazy infinite sequence of primes"
+  []
+  (->> (sieve-states)
+       (map first)
+       (filter identity)))
 
 (defn prime-factors
   "Returns a complete list of prime factors of n. E.g. the prime factors of 12 are
@@ -79,7 +125,7 @@
          (if (multiple? potential-factor remaining)
            (recur potential-factors
                   (quot remaining potential-factor) ; reduce remaining
-                  (conj acc-factors potential-factor)) 
+                  (conj acc-factors potential-factor))
            (recur (rest potential-factors) remaining acc-factors))))))) ; remove non-factor
 
 (defn square [n] (* n n))

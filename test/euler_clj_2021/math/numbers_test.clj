@@ -1,6 +1,7 @@
 (ns euler-clj-2021.math.numbers-test
   (:require [clojure.test :refer [deftest testing is are]]
-            [euler-clj-2021.math.numbers :as num]))
+            [euler-clj-2021.math.numbers :as num]
+            [shams.priority-queue :as pq]))
 
 (deftest divides-tests
   (testing "divides:"
